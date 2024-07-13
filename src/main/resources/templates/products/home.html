@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List Product</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{/components/header :: header}"></div>
+    <h3 class="text-center text-danger mt-3">Enter Product Information</h3>
+    <form action="/products/storeProduct" method="post">
+        <div class="mb-3">
+            <label for="brand" class="form-label"><strong>Brand</strong></label>
+            <select class="form-select" id="brand" name="brand">
+                <option value="" hidden>--Choose brand</option>
+                <option th:each="brand : ${listBrand}" th:value="${brand.id}" th:text="${brand.brandName}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label"><strong>Category</strong></label>
+            <select class="form-select" id="category" name="category">
+                <option value="" hidden>--Choose category</option>
+                <option th:each="category : ${listCategory}" th:value="${category.id}"
+                        th:text="${category.categoryName}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label"><strong>Name</strong></label>
+            <input type="text" class="form-control" id="name" name="productName">
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label"><strong>Price</strong></label>
+            <input type="number" step="0.01" class="form-control" id="price" name="price">
+        </div>
+        <button type="submit" class="mb-3 btn btn-success" id="save">Save</button>
+    </form>
+
+    <h3 class="text-center text-danger mt-3">List Product</h3>
+    <table class="table table-striped mt-3">
+        <tr>
+            <th>STT</th>
+            <th>Brand</th>
+            <th>Category</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Action</th>
+        </tr>
+        <tr th:each="product, index : ${listProduct}">
+            <td th:text="${index.count}"></td>
+            <td th:text="${product.brand.brandName}"></td>
+            <td th:text="${product.category.categoryName}"></td>
+            <td th:text="${product.productName}"></td>
+            <td th:text="${product.price}"></td>
+            <td>
+                <a th:href="@{/products/variants/{id}(id=${product.id})}" class="btn btn-info">Variant</a>
+                <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-warning">Edit</a>
+                <a th:href="@{/products/delete/{id}(id=${product.id})}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    </table>
+    <!-- Pagination -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/products/home(page=${currentPage - 2}, size=${pageSize}, sortBy='id')}"
+                   aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item" th:each="i : ${pageNumbers}" th:classappend="${i == currentPage} ? 'active' : ''">
+                <a class="page-link"
+                   th:href="@{/products/home(page=${i - 1}, size=${pageSize}, sortBy='id')}">[[${i}]]</a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/products/home(page=${currentPage}, size=${pageSize}, sortBy='id')}"
+                   aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div th:insert="~{/components/footer :: footer}"></div>
+</body>
+</html>

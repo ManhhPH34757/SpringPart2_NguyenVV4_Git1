@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Product Information</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{/components/header :: header}"></div>
+    <h3 class="text-center text-danger mt-3">Enter Product Information</h3>
+    <form th:action="@{/products/updateProduct/{id}(id=${product.id})}" method="post">
+        <div class="mb-3">
+            <label for="brand" class="form-label">Brand</label>
+            <select class="form-select" id="brand" name="brand">
+                <option value="" hidden>--Choose brand</option>
+                <option th:each="brand : ${listBrand}" th:value="${brand.id}"
+                        th:text="${brand.brandName}" th:selected="${brand.id == product.brand.id}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-select" id="category" name="category">
+                <option value="" hidden>--Choose category</option>
+                <option th:each="category : ${listCategory}" th:value="${category.id}"
+                        th:text="${category.categoryName}" th:selected="${category.id == product.category.id}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" name="productName" th:value="${product.productName}">
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" step="0.01" class="form-control" id="price" name="price" th:value="${product.price}">
+        </div>
+        <button type="submit" class="mb-3 btn btn-success" id="update">Update</button>
+    </form>
+    <div th:insert="~{/components/footer :: footer}"></div>
+</div>
+</body>
+</html>

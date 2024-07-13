@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: SpringPart2
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=ShoeStore
+    username: sa
+    password: nguyenmanh2707
+  jpa:
+    open-in-view: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
